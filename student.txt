@@ -1,0 +1,27 @@
+package pack1;
+
+public class student {
+	
+	public String name;
+	public String surname;
+	public String id;
+	
+	private float gpa;
+	
+	public int grade1;
+	public int grade2;
+	public int grade3;
+	public int grade4;
+	public int grade5;
+	
+	
+	public float getGpa(float not1, float not2, float not3, float not4, float not5){
+	
+		gpa= ((not1+not2+not3+not4+not5)/5)*4/100 ;
+		return gpa;
+		}
+	
+
+	
+	
+}

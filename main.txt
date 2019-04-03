@@ -1,0 +1,432 @@
+package pack1;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+
+public class Main {
+	
+
+
+	public static void main(String[] args) throws IOException {
+	
+		
+		
+	Scanner scan = new Scanner(System.in);
+	while(true){
+		
+		
+File dosya= new File("Students.txt");
+		
+		if(!dosya.exists())//Dosyanýn var olup olmadýðýný kontrol edip eðer yoksa dosya açan if.
+		{
+			dosya.createNewFile();
+		}
+		
+		
+		int bilgiAl;
+		
+		while(true) // Switch seçimini 1- 7 arasýnda sýnýrlayan while döngüsü
+		{System.out.println("Enter a number between 1-7" + "\n1- Show student information: \n2- Show ALL student information: \n3- Add new student: \n4- Delete Student: \n5- Update Student:"+
+		  "\n6- Show Gpa: \n7- Show Gpa avarage:");
+		
+		bilgiAl= scan.nextInt();
+		
+		if(bilgiAl < 8 && bilgiAl > 0)
+		{ break;
+		   }
+		else
+			System.out.println("Please use the numbers from the list!");
+		}
+		
+		int dagitici= bilgiAl;
+		
+		
+		switch(dagitici) //Switch started
+		{
+		case 1: //Show Student information
+			
+			while(true){
+			FileReader dosyaOku2 = new FileReader(dosya);
+			BufferedReader bRead2= new BufferedReader(dosyaOku2);
+			
+			ArrayList<String> ogrenciListe2= new ArrayList<String>();
+			
+			String satir2;
+			while( (satir2= bRead2.readLine()) !=null) //Each line of txt file was coppied to the arraylist
+			{
+				ogrenciListe2.add(satir2);
+			}
+			bRead2.close();
+			int ogrenciListesiBoyut= ogrenciListe2.size(); 
+			String [] sýralanacakListe= new String[ogrenciListesiBoyut]; 
+			
+			for(int i=0 ; i <= (ogrenciListesiBoyut-1); i++) //The arraylist was coppied to the array for sort operation.
+			{
+				sýralanacakListe[i]= ogrenciListe2.get(i);
+			}
+			
+			
+			Arrays.sort(sýralanacakListe); //Array sorted
+			
+			String [] studentIdList1 = new String [ogrenciListesiBoyut];
+			
+			for(int i=0 ; i <= (ogrenciListesiBoyut-1); i++)
+			{
+				
+				String studentIdList[]= sýralanacakListe[i].split(" "); //The student id was coppied from main array
+				studentIdList1[i]= studentIdList[0]; 
+			}
+			
+			System.out.println("Enter a Student id:");
+			String idSor= scan.next();
+			
+			int arrayMatris= Arrays.binarySearch(studentIdList1, idSor); //Student id searched
+			if(arrayMatris >= 0 )
+			{System.out.println(sýralanacakListe[arrayMatris]); //Student information was showed
+			 System.out.println("Main Menu?? Yes: 1/No: 0");
+			 int cikis1= scan.nextInt();
+			 
+			 if(cikis1 == 1)
+			 {break;}
+			 
+			}
+			
+			else
+				{System.out.println("The student could not be found. Please check the id.");}
+		}//Case 1's while was closed...
+			break;
+		
+		case 2: // Show all the students information.
+			
+			FileReader dosyaOku = new FileReader(dosya);
+			BufferedReader bRead= new BufferedReader(dosyaOku);
+				System.out.println("   ID   "+   "     Name  "  + "  Surname   " + " GPA       "    + "   Course Grades   "+ "\n--------------------------------------------------------------------");
+				String line;
+				while((line= bRead.readLine()) !=null)	{
+			
+				System.out.println(line);	
+				
+				}
+			bRead.close();
+			break;
+		
+		case 3: //Add New Student
+			
+			student s1= new student();
+			
+			ArrayList<String>isimList= new ArrayList<String>(); //Array List for each student
+			
+			FileWriter writer = new FileWriter("Students.txt", true );
+			BufferedWriter bwrite= new BufferedWriter(writer);
+			
+			int sonuc= 0;
+			for(int sayac=0; sayac <= sonuc ; sayac++ ) {
+			//Infinity loop while "false" will be entered.
+				
+				String bosluk= scan.nextLine();
+				
+				System.out.println("Student Id: ");
+				s1.id= scan.nextLine();
+				
+				System.out.println("Student Name:");
+				s1.name=scan.nextLine();
+				
+				System.out.println("Student Surname:");
+				s1.surname=scan.nextLine();
+				
+				System.out.println("Course 1 Grade:");
+				int gr1= s1.grade1 = scan.nextInt();
+			
+				System.out.println("Course 2 Grade:");
+				int gr2= s1.grade2= scan.nextInt();
+				
+				System.out.println("Course 3 Grade:");
+				int gr3= s1.grade3= scan.nextInt();
+				
+				System.out.println("Course 4 Grade:");
+				int gr4= s1.grade4=  scan.nextInt();
+				
+				System.out.println("Course 5 Grade:");
+				int gr5= s1.grade5 = scan.nextInt();
+				
+		
+			
+				isimList.add(s1. id + " "  + s1.getGpa(gr1, gr2, gr3, gr4, gr5)+ " "+ s1. name + "  "+ s1.surname + " Course 1: "+ s1.grade1 + " Course 2: "+ s1.grade2 +" Course 3: "
+				+ s1.grade3 +" Course 4 :"+ s1.grade4 + " Course 5: "+ s1.grade5);// Add new line to the Arraylist.
+				
+				
+				bwrite.write(isimList.get(sayac)); // Writer
+				bwrite.newLine();
+				
+				System.out.println("Would you like to add a new student? true/false"+ bosluk);
+				boolean b= scan.nextBoolean();
+				if(b== true){
+					sonuc += 1;
+				}
+			}
+			
+			
+			bwrite.close();
+			break;
+			
+		case 4: //Delete student
+			FileReader dosyaOku1 = new FileReader(dosya);
+			BufferedReader bRead1= new BufferedReader(dosyaOku1);
+			
+			ArrayList<String> ogrenciListe= new ArrayList<String>(); //Arraylist was created
+			String satir;
+			while( (satir= bRead1.readLine()) !=null) //Each line of the file was added to ArrayList
+			{
+				ogrenciListe.add(satir);
+			}
+			
+			for(int i=1; i <= ogrenciListe.size(); i++) { //Arraylist printed
+				
+				System.out.println( i+ ". "+ ogrenciListe.get(i-1) + "\n");
+			}
+			
+			
+			System.out.println("Please enter the student's number which is you want to delete:"); 
+			int studentNumber= scan.nextInt(); // The element which will be deleted was determined
+			
+		/*	System.out.println("Are you sure to DELETE this student's all information? Y/N");
+			String sayac666= scan.next();
+			
+			if(sayac666== "n")*/
+			
+			ogrenciListe.remove(studentNumber-1);
+			
+			/*
+			 *                                           ÖNEMLÝ NOT!!!!!
+			 *  Dosyadan eleman silme iþlemi için dosyayý silip yeni dosya açýldý, Arraylistten silinmesi gereken eleman silindi ve 
+			 *   güncel liste yeni dosyaya aktarýldý...  Bilgisayarý daha az zorlayacak yöntemleri sormayý unutma!!!!
+			 */
+			
+			
+			dosya.delete();
+			dosya.createNewFile();
+			
+			FileWriter nYaz= new FileWriter(dosya);
+			BufferedWriter nWrite= new BufferedWriter(nYaz);
+			for (int i=0; i<= ogrenciListe.size() -1 ; i++)
+			{	
+				nWrite.write(ogrenciListe.get(i));
+				nWrite.newLine();
+			}
+			
+				nWrite.close();
+			
+			break;
+		case 5://Update a Student. 
+			FileReader dosyaOku3 = new FileReader(dosya);
+			BufferedReader bRead3= new BufferedReader(dosyaOku3);
+			
+			ArrayList<String> ogrenciListe3= new ArrayList<String>(); //Arraylist was created
+			String satir3;
+			while( (satir3= bRead3.readLine()) !=null) //Each line of the file was added to ArrayList
+			{
+				ogrenciListe3.add(satir3);
+			}
+			
+			for(int i=1; i <= ogrenciListe3.size(); i++) { //Arraylist printed
+				
+				System.out.println( i+ ". "+ ogrenciListe3.get(i-1) + "\n");
+			}
+			
+			
+			System.out.println("Please enter the student's number which is you want to delete:"); 
+			int studentNumber3= scan.nextInt(); // The element which will be deleted was determined
+		
+			
+			ogrenciListe3.remove(studentNumber3-1);
+			
+			
+			student s2 = new student();
+			
+			String bosluk3= scan.nextLine();
+			
+			System.out.println("New Student Id: ");
+			s2.id= scan.nextLine();
+			
+			System.out.println("New Student Name:");
+			s2.name=scan.nextLine();
+			
+			System.out.println("New Student Surname:");
+			s2.surname=scan.nextLine();
+			
+			System.out.println("Course 1 Grade:");
+			int gr1= s2.grade1 = scan.nextInt();
+		
+			System.out.println("Course 2 Grade:");
+			int gr2= s2.grade2= scan.nextInt();
+			
+			System.out.println("Course 3 Grade:");
+			int gr3= s2.grade3= scan.nextInt();
+			
+			System.out.println("Course 3 Grade:"+ bosluk3);
+			int gr4= s2.grade4=  scan.nextInt();
+			
+			System.out.println("Course 3 Grade:");
+			int gr5= s2.grade5 = scan.nextInt();
+			
+			ogrenciListe3.add (s2. id + " "+ s2.getGpa(gr1, gr2, gr3, gr4, gr5) + " " + s2. name + "  " + s2.surname + " Course 1: "+ s2.grade1 + " Course 2: "+ s2.grade2 +" Course 3: "
+					+ s2.grade3 +" Course 4 :"+ s2.grade4 + " Course 5: "+ s2.grade5) ; //new student's information
+			
+			
+			
+			dosya.delete();
+			dosya.createNewFile();
+			
+			FileWriter nYaz3= new FileWriter(dosya);
+			BufferedWriter nWrite3= new BufferedWriter(nYaz3);
+			for (int i=0; i<= ogrenciListe3.size() -1 ; i++)
+			{	
+				nWrite3.write(ogrenciListe3.get(i));
+				nWrite3.newLine();
+			}
+			
+				nWrite3.close();
+		
+			
+			
+			break;
+		case 6: //Show students gpa
+		
+			while(true){
+				FileReader dosyaOku2 = new FileReader(dosya);
+				BufferedReader bRead2= new BufferedReader(dosyaOku2);
+				
+				ArrayList<String> ogrenciListe2= new ArrayList<String>();
+				
+				String satir2;
+				while( (satir2= bRead2.readLine()) !=null) //Each line of txt file was coppied to the arraylist
+				{
+					ogrenciListe2.add(satir2);
+				}
+				bRead2.close();
+				int ogrenciListesiBoyut= ogrenciListe2.size(); 
+				String [] sýralanacakListe= new String[ogrenciListesiBoyut]; 
+				
+				for(int i=0 ; i <= (ogrenciListesiBoyut-1); i++) //The arraylist was coppied to the array for sort operation.
+				{
+					sýralanacakListe[i]= ogrenciListe2.get(i);
+				}
+				
+				
+				Arrays.sort(sýralanacakListe); //Array sorted
+				
+				String [] studentIdList1 = new String [ogrenciListesiBoyut];
+				
+				
+				for(int i=0 ; i <= (ogrenciListesiBoyut-1); i++)
+				{
+					
+					String studentIdList[]= sýralanacakListe[i].split(" "); //The student id was coppied from main array
+					studentIdList1[i]= studentIdList[0]; 
+				}
+				
+				System.out.println("Enter a Student id:");
+				String idSor= scan.next();
+				
+				int arrayMatris= Arrays.binarySearch(studentIdList1, idSor); //Student id searched
+				if(arrayMatris >= 0 )
+				{
+					String studentIdList[]= sýralanacakListe[arrayMatris].split(" ");
+					
+					
+					
+					System.out.println( "The studend which has " + studentIdList[0] + " number's gpa is :" + studentIdList[1]); //Student information was showed
+					
+				
+				System.out.println("Main Menu?? Yes: 1/No: 0");
+				 int cikis1= scan.nextInt();
+				 
+				 if(cikis1 == 1)
+				 {break;}
+				 
+				}
+				
+				else
+					{System.out.println("The student could not be found. Please check the id.");}
+			}//Case 5's while was closed...
+				break;
+		case 7: //gpa avarage
+			
+			FileReader dosyaOku7 = new FileReader(dosya);
+			BufferedReader bRead7= new BufferedReader(dosyaOku7);
+			
+			ArrayList<String> ogrenciListe7= new ArrayList<String>();
+			
+			String satir7;
+			while( (satir7= bRead7.readLine()) !=null) //Each line of txt file was coppied to the arraylist
+			{
+				ogrenciListe7.add(satir7);
+			}
+			bRead7.close();
+			
+			String [] tumListe= new String[ogrenciListe7.size()];
+			
+			for(int i=0 ; i <= (ogrenciListe7.size() -1); i++) //The arraylist was coppied to the array for sort operation.
+			{
+				tumListe[i]= ogrenciListe7.get(i);
+			}
+			
+			float [] gpaList= new float[ogrenciListe7.size()];
+			
+			for(int i=0 ; i <= (ogrenciListe7.size()-1); i++)
+			{
+				
+				String studentGpaList[]= tumListe[i].split(" "); //The student id was coppied from main array
+				String s = studentGpaList[1];
+				float a = Float.valueOf(s);
+				gpaList[i]= a; 
+			}
+			
+			
+		 float toplam=0;
+			for(int i=1; i<= gpaList.length; i++)
+			{
+				float b = gpaList[i-1];
+				toplam= toplam+  b;
+			}
+			float ortalama= toplam/ gpaList.length;
+			System.out.printf("Gpa avarage is %.2f ",  ortalama);
+			
+			break;
+			
+		default:
+			
+			System.out.println("Please enter a number between 0 and 9");
+			
+			break; 
+		
+		
+			
+		}// Switch closed
+		
+		
+		 System.out.println("\nMain Menu or exit ?? Menu: 0/Exit: 1");
+		 int cikis1= scan.nextInt();
+		 
+		 if(cikis1 == 1)
+		 {break;}
+		 
+		}
+		
+		
+		
+		scan.close();
+		
+		
+		
+		
+ }//main closed
+}//Class closed
